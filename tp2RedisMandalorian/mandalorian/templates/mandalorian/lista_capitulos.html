@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Capítulos</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>Lista de Capítulos de The Mandalorian</h1>
+
+    <!-- Contenedor del buscador -->
+    <div class="buscador-container">
+        <input type="text" id="buscador" placeholder="Buscar capítulo..." value="{{ request.GET.q|default:'' }}">
+        <button onclick="buscarCapitulos()">Buscar</button>
+    </div>
+
+    <div class="capitulos">
+        {% for cap in capitulos %}
+        <div class="capitulo">
+            <h2 class="titulo">{{ cap.titulo }}</h2>  
+            <p class="subtitulo">Temporada {{ cap.temporada }} - Capítulo {{ cap.capitulo }}</p>
+            <p>{{ cap.descripcion }}</p>
+            <p><strong>Estado:</strong> {{ cap.estado }}</p>
+            {% if cap.estado == "disponible" %}
+                <a href="{% url 'reservar_capitulo' cap.temporada cap.capitulo %}">Reservar</a>
+            {% elif cap.estado == "reservado" %}
+                <p>En espera de pago...</p>
+            {% elif cap.estado == "alquilado" %}
+                <p>Alquilado</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        function buscarCapitulos() {
+            let input = document.getElementById("buscador").value;
+            window.location.href = `?q=${encodeURIComponent(input)}`;
+        }
+    </script>
+</body>
+</html>

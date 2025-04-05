@@ -1,5 +1,5 @@
-from mandalorian.redis_client import redis_client
-from mandalorian.utils import mandalorian_episodes
+from redis_client import redis_client
+from utils import mandalorian_episodes
 import json
 
 # Eliminar solo los episodios existentes en Redis antes de actualizar

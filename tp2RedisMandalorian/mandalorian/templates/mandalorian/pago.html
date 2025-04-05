@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Confirmar Pago</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+    <h2>Confirmar pago del capítulo {{ capitulo }} de la temporada {{ temporada }}</h2>
+    <p>Precio del capítulo: $2.99</p>
+
+    <form action="{% url 'confirmar_pago' temporada capitulo %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="boton">Confirmar Pago</button>
+    </form>
+
+    <div class="morado">
+        <a href="{% url 'listar_capitulos' %}">
+            <a href="{% url 'listar_capitulos' %}"><button class="boton">Volver al inicio</button></a>
+        </a>
+    </div>
+
+</body>
+</html>

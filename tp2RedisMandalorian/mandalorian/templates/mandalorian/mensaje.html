@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mensaje</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="mensaje">
+        <h1>{{ mensaje }}</h1>
+
+        {% if mostrar_botones %}
+            <a href="{% url 'listar_capitulos' %}"><button class="boton">Volver al inicio</button></a>
+            <a href="{% url 'pago' temporada capitulo %}"><button class="boton">Ir a pagar</button></a>
+        {% endif %}
+
+        {% if regresar %}
+        <a href="{% url 'listar_capitulos' %}"><button class="boton">Volver al inicio</button></a>
+        {% endif %}
+    </div>
+</body>
+</html>

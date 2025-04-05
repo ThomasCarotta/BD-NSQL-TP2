@@ -26,10 +26,10 @@ def listar_capitulos(request):
                             cap.pop("timestamp_reserva", None)
                             redis_client.set(key, json.dumps(cap))
 
-                    # Verificar si el alquiler expiró (1 minuto para testeo)
+                    # Verificar si el alquiler expiró 
                     elif cap.get("estado") == "alquilado":
                         timestamp = cap.get("timestamp_alquiler")
-                        if timestamp and now > datetime.utcfromtimestamp(timestamp) + timedelta(minutes=1):
+                        if timestamp and now > datetime.utcfromtimestamp(timestamp) + timedelta(hours=24):
                             cap["estado"] = "disponible"
                             cap.pop("timestamp_alquiler", None)
                             redis_client.set(key, json.dumps(cap))

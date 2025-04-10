@@ -2,17 +2,21 @@ from redis_client import redis_client
 from utils import mandalorian_episodes
 import json
 
-# Eliminar solo los episodios existentes en Redis antes de actualizar
-for key in redis_client.keys("capitulo:*"):
-    redis_client.delete(key)
+# Buscar si ya existen capítulos en Redis
+if not redis_client.keys("capitulo:*"):
+    print("No se encontraron capítulos en Redis. Cargando...")
 
-# Insertar los episodios sin la clave de imagen
-def clean_episode(episode):
-    episode.pop("imagen", None)  # Elimina la clave "imagen" si existe
-    return episode
+    # Limpia la imagen antes de guardar
+    def clean_episode(episode):
+        episode.pop("imagen", None)
+        return episode
 
-for episode in mandalorian_episodes:
-    cleaned_episode = clean_episode(episode)
-    redis_client.set(f"capitulo:{episode['temporada']}:{episode['capitulo']}", json.dumps(cleaned_episode))
+    # Guardar cada capítulo si no está
+    for episode in mandalorian_episodes:
+        cleaned_episode = clean_episode(episode)
+        key = f"capitulo:{episode['temporada']}:{episode['capitulo']}"
+        redis_client.set(key, json.dumps(cleaned_episode))
 
-print("Capítulos actualizados en Redis sin imágenes.")
+    print("Capítulos cargados correctamente.")
+else:
+    print("Capítulos ya presentes en Redis. No se cargan nuevamente.")
